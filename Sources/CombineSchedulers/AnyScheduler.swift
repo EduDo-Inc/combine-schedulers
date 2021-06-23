@@ -277,4 +277,34 @@
       RunLoop.main.eraseToAnyScheduler()
     }
   }
+
+  @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
+  extension AnyScheduler {
+    public func ignoreOptions() -> AnyScheduler<SchedulerTimeType, Never> {
+      AnyScheduler<SchedulerTimeType, Never>(
+        minimumTolerance: { self.minimumTolerance },
+        now: { self.now },
+        scheduleImmediately: { options, action in
+          self.schedule(options: nil, action)
+        },
+        delayed: { date, tolerance, options, action in
+          self.schedule(
+            after: date,
+            tolerance: tolerance,
+            options: nil,
+            action
+          )
+        },
+        interval: { date, interval, tolerance, options, action in
+          self.schedule(
+            after: date,
+            interval: interval,
+            tolerance: tolerance,
+            options: nil,
+            action
+          )
+        }
+      )
+    }
+  }
 #endif
