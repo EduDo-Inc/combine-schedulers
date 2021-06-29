@@ -278,14 +278,14 @@
     }
   }
 
-  @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
+  @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
   public typealias NoOptionsSchedulerOf<Scheduler> = CombineSchedulers.AnyScheduler<
     Scheduler.SchedulerTimeType, Never
   > where Scheduler : Combine.Scheduler
 
-  @available(iOS 13, macOS 10.15, tvOS 13, watchOS 6, *)
-  extension AnyScheduler {
-    public func ignoreOptions() -> AnyScheduler<SchedulerTimeType, Never> {
+  @available(iOS 13, macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
+  extension Scheduler {
+    public func ignoreOptions() -> NoOptionsSchedulerOf<Self> {
       AnyScheduler<SchedulerTimeType, Never>(
         minimumTolerance: { self.minimumTolerance },
         now: { self.now },
