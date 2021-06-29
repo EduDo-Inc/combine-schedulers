@@ -100,9 +100,9 @@ class EpisodeViewModel: ObservableObject {
   @Published var episode: Episode?
 
   let apiClient: ApiClient
-  let scheduler: AnySchedulerOf<DispatchQueue>
+  let scheduler: NoOptionsSchedulerOf<DispatchQueue>
 
-  init(apiClient: ApiClient, scheduler: AnySchedulerOf<DispatchQueue>) {
+  init(apiClient: ApiClient, scheduler: NoOptionsSchedulerOf<DispatchQueue>) {
     self.apiClient = apiClient
     self.scheduler = scheduler
   }
@@ -120,7 +120,16 @@ Then, in production we can create a view model that uses a live `DispatchQueue`,
 ```swift
 let viewModel = EpisodeViewModel(
   apiClient: ...,
-  scheduler: DispatchQueue.main.eraseToAnyScheduler()
+  scheduler: DispatchQueue.main.ignoreOptions()
+)
+```
+
+or use `UIScheduler.shared` for `NoOptionsScheduler<DispatchQueue>`
+
+```swift
+let viewModel = EpisodeViewModel(
+  apiClient: ...,
+  scheduler: UIScheduler.shared.eraseToAnyScheduler()
 )
 ```
 
